@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /*.pdf$
+
+Sitemap: https://osrtransport.com/sitemap.xml
+
+# Specific crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+# Cache settings
+Cache-Control: public, max-age=31536000
