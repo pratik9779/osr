@@ -10,6 +10,152 @@ const bookingForm = document.getElementById('bookingForm');
 const newsletterForm = document.getElementById('newsletterForm');
 const bookingModal = document.getElementById('bookingModal');
 
+// Translation elements
+const translationBtn = document.getElementById('translationBtn');
+const translationDropdown = document.getElementById('translationDropdown');
+const langOptions = document.querySelectorAll('.lang-option');
+
+/* =====================
+   TRANSLATION SYSTEM WITH i18next
+   ===================== */
+
+// Initialize i18next
+let i18nextReady = false;
+
+// Load translation resources
+async function loadTranslationResources() {
+    try {
+        const [enRes, hiRes, mrRes] = await Promise.all([
+            fetch('locales/en.json').then(r => r.json()),
+            fetch('locales/hi.json').then(r => r.json()),
+            fetch('locales/mr.json').then(r => r.json())
+        ]);
+
+        i18next.init({
+            lng: localStorage.getItem('selectedLanguage') || 'en',
+            fallbackLng: 'en',
+            resources: {
+                en: { translation: enRes },
+                hi: { translation: hiRes },
+                mr: { translation: mrRes }
+            },
+            interpolation: {
+                escapeValue: false
+            },
+            
+        }, (err, t) => {
+            if (err) {
+                console.error('i18next initialization error:', err);
+            } else {
+                i18nextReady = true;
+                console.log('i18next initialized successfully');
+                translatePageContent();
+                updateLanguageButtonState();
+            }
+        });
+    } catch (error) {
+        console.error('Error loading translation resources:', error);
+        // Fallback: Initialize without translations
+        i18nextReady = true;
+    }
+}
+
+// Initialize translations when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTranslationResources);
+} else {
+    loadTranslationResources();
+}
+
+// Function to change language
+function changeLanguage(lang) {
+    if (!i18nextReady) return;
+    
+    localStorage.setItem('selectedLanguage', lang);
+    i18next.changeLanguage(lang, () => {
+        translatePageContent();
+    updateLanguageLabel(); // ✅ ADD THIS
+
+    const langNames = { en: 'English', hi: 'हिंदी', mr: 'मराठी' };
+    showNotification(`${i18next.t('notifications.languageChanged')} ${langNames[lang]}`, 'success');    
+    });
+}
+
+// Function to translate page content
+function translatePageContent() {
+    if (!i18nextReady) return;
+    
+    // Translate all elements with data-translate attribute (for backward compatibility)
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(element => {
+        const key = element.dataset.translate;
+        const translation = i18next.t(key, { defaultValue: key });
+        element.textContent = translation;
+    });
+    
+    // Translate elements with data-i18n attribute
+    const i18nElements = document.querySelectorAll('[data-i18n]');
+    i18nElements.forEach(element => {
+        const key = element.dataset.i18n;
+        const translation = i18next.t(key, { defaultValue: key });
+        element.textContent = translation;
+    });
+}
+
+// Update language button state
+function updateLanguageButtonState() {
+    const currentLang = i18next.language;
+    document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === currentLang);
+    });
+}
+function updateLanguageLabel() {
+    const langMap = {
+        en: 'EN',
+        hi: 'HI',
+        mr: 'MR'
+    };
+
+    const currentLang = i18next.language || 'en';
+    const label = langMap[currentLang] || 'EN';
+
+    const langDisplay = document.getElementById('currentLang');
+    if (langDisplay) {
+        langDisplay.textContent = label;
+    }
+}
+/* =====================
+   TRANSLATION FUNCTIONALITY
+   ===================== */
+
+// Toggle translation dropdown
+translationBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    translationDropdown.classList.toggle('show');
+});
+
+// Close dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!translationBtn.contains(e.target) && !translationDropdown.contains(e.target)) {
+        translationDropdown.classList.remove('show');
+    }
+});
+
+// Language selection
+langOptions.forEach(option => {
+    option.addEventListener('click', () => {
+        changeLanguage(option.dataset.lang);
+        translationDropdown.classList.remove('show');
+    });
+});
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    if (i18nextReady) {
+        translatePageContent();
+    }
+});
+
 /* =====================
    MOBILE MENU FUNCTIONALITY
    ===================== */

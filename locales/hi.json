@@ -1,0 +1,99 @@
+{
+  "nav": {
+    "home": "होम",
+    "about": "हमारे बारे में",
+    "services": "सेवाएं",
+    "trips": "यात्राएं",
+    "testimonials": "प्रशंसापत्र",
+    "contact": "संपर्क"
+  },
+  "about": {
+    "title": "ओएसआर ट्रांसपोर्ट के बारे में",
+    "subtitle": "आपका विश्वसनीय यात्रा साथी",
+    "heading": "हम कौन हैं",
+    "description": "ओएसआर ट्रांसपोर्ट 2010 से सिंधुदुर्ग क्षेत्र की सेवा कर रहा है, सुरक्षित, आरामदायक और किफायती परिवहन समाधान प्रदान करता है।",
+    "yearsOfService": "सेवा के वर्ष",
+    "happyCustomers": "खुश ग्राहक",
+    "dailyTrips": "दैनिक यात्राएं",
+    "modernBuses": "आधुनिक बसें"
+  },
+  "services": {
+    "title": "हमारी सेवाएं",
+    "subtitle": "व्यापक परिवहन समाधान",
+    "cityTransport": "शहर परिवहन",
+    "highwayRoutes": "राजमार्ग मार्ग",
+    "tourismPackages": "पर्यटन पैकेज",
+    "corporateTransport": "कॉर्पोरेट परिवहन",
+    "groupTravel": "समूह यात्रा",
+    "cargoLogistics": "कार्गो और लॉजिस्टिक्स"
+  },
+  "trips": {
+    "title": "लोकप्रिय मार्ग",
+    "subtitle": "हमारे प्रीमियम यात्रा विकल्पों का अन्वेषण करें",
+    "distance": "दूरी:",
+    "duration": "अवधि:",
+    "fare": "किराया:",
+    "departure": "प्रस्थान:",
+    "bookTicket": "टिकट बुक करें"
+  },
+  "whyChoose": {
+    "title": "ओएसआर ट्रांसपोर्ट क्यों चुनें",
+    "subtitle": "कारण हमारे ग्राहक हमें प्यार करते हैं",
+    "safetyFirst": "सुरक्षा पहले",
+    "comfort": "आराम",
+    "affordableRates": "किफायती दरें",
+    "onTimeService": "समय पर सेवा",
+    "easyBooking": "आसान बुकिंग",
+    "insuranceCoverage": "बीमा कवरेज"
+  },
+  "testimonials": {
+    "title": "हमारे ग्राहक क्या कहते हैं",
+    "subtitle": "वास्तविक यात्रियों से वास्तविक समीक्षाएं"
+  },
+  "contact": {
+    "title": "संपर्क में रहें",
+    "subtitle": "हम मदद करने के लिए यहाँ हैं",
+    "address": "पता",
+    "phone": "फोन",
+    "email": "ईमेल",
+    "businessHours": "व्यवसायिक घंटे",
+    "fullName": "पूर्ण नाम *",
+    "emailAddress": "ईमेल पता *",
+    "phoneNumber": "फोन नंबर *",
+    "subject": "विषय *",
+    "message": "संदेश *",
+    "sendMessage": "संदेश भेजें"
+  },
+  "booking": {
+    "title": "अपनी टिकट बुक करें",
+    "from": "से *",
+    "to": "को *",
+    "departureDate": "प्रस्थान तारीख *",
+    "passengers": "यात्रियों की संख्या *",
+    "travelDate": "यात्रा तारीख *",
+    "proceedPayment": "भुगतान के लिए आगे बढ़ें"
+  },
+  "footer": {
+    "osrTransport": "ओएसआर ट्रांसपोर्ट",
+    "aboutUs": "हमारे बारे में",
+    "quickLinks": "त्वरित लिंक",
+    "contact": "संपर्क",
+    "newsletter": "समाचार पत्र",
+    "subscribe": "हमारे समाचार पत्र की सदस्यता लें",
+    "email": "ईमेल पता",
+    "subscribe_btn": "सदस्यता लें",
+    "copyright": "© 2024 ओएसआर ट्रांसपोर्ट। सर्वाधिकार सुरक्षित।",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsService": "सेवा की शर्तें"
+  },
+  "notifications": {
+    "fillAllFields": "कृपया सभी क्षेत्रों को भरें",
+    "invalidEmail": "कृपया वैध ईमेल पता दर्ज करें",
+    "invalidPhone": "कृपया वैध फोन नंबर दर्ज करें",
+    "messageSent": "धन्यवाद! आपका संदेश सफलतापूर्वक भेज दिया गया है। हम जल्द ही आपसे संपर्क करेंगे।",
+    "bookingDetails": "कृपया सभी बुकिंग विवरण भरें",
+    "bookingConfirmed": "बुकिंग की पुष्टि की गई! भुगतान विवरण के लिए अपना ईमेल जांचें। संदर्भ: बीके",
+    "subscribed": "हमारे समाचार पत्र के लिए सफलतापूर्वक सदस्यता ली गई!",
+    "languageChanged": "भाषा बदल दी गई है"
+  }
+}
