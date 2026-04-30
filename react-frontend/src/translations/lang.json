@@ -1,0 +1,60 @@
+{
+  "en": {
+    "title": "OSR Tours and Travels",
+    "services": {
+      "heading": "Our Premium Services",
+      "list": [
+        "Traveller 20 seater AC/Non AC",
+        "Traveller 26 seater AC/Non AC",
+        "Urbania AC 17 seater",
+        "Innova AC 7 seater",
+        "Ertiga AC 7 seater",
+        "Cruser AC 10 seater",
+        "Swift Dzire 5 seater",
+        "Two wheelers on rent",
+        "Transport Vehicles",
+        "Eicher",
+        "Intra pick up 2 ton",
+        "Carry 1 ton"
+      ]
+    },
+    "location": "Dattanagar Kudal-Malvan Road Kudal",
+    "contact": "Vehicle on Rent",
+    "phone": "9309721804 | 9422633116 | 9405974207",
+    "features": [
+      "100% Safe & Secure Fully Sanitized Car",
+      "Expert Driver",
+      "Reliable Service",
+      "Pickup from Home"
+    ]
+  },
+  "mr": {
+    "title": "OSR टुर्स आणि ट्रॅव्हल्स",
+    "services": {
+      "heading": "आमच्या प्रीमियम सेवा",
+      "list": [
+        "टेम्पो ट्रॅव्हलर 20 सीटर एसी/नॉन एसी",
+        "टेम्पो ट्रॅव्हलर 26 सीटर एसी/नॉन एसी",
+        "अर्बानिया एसी 17 सीटर",
+        "इनोव्हा एसी 7 सीटर",
+        "एर्टिगा एसी 7 सीटर",
+        "क्रूझर एसी 10 सीटर",
+        "स्विफ्ट डिझायर 5 सीटर",
+        "भाड्याने दुचाकी",
+        "ट्रान्सपोर्ट वाहने",
+        "आयशर",
+        "इंट्रा पिकअप 2 टन",
+        "कॅरी 1 टन"
+      ]
+    },
+    "location": "दत्तानगर, कुडाळ-मालवण रोड, कुडाळ",
+    "contact": "भाड्याने वाहन मिळेल",
+    "phone": "9309721804 | 9422633116 | 9405974207",
+    "features": [
+      "100% सुरक्षित आणि सुरक्षितता पूर्ण: सॅनिटाईझ केलेली वाहने",
+      "तज्ज्ञ ड्रायव्हर",
+      "विश्वासार्ह सेवा",
+      "घरापासून पिकअप सुविधा"
+    ]
+  }
+}
