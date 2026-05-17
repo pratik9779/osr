@@ -5,7 +5,7 @@ Disallow: /private/
 Disallow: /*.json$
 Disallow: /*.pdf$
 
-Sitemap: https://osrtransport.com/sitemap.xml
+Sitemap: https://osrtoursandtravels.com/sitemap.xml
 
 # Specific crawlers
 User-agent: Googlebot

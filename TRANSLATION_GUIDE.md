@@ -1,7 +1,7 @@
 # i18next Translation System Documentation
 
 ## Overview
-The OSR Transport website now uses **i18next**, a professional open-source internationalization framework, for managing translations instead of hardcoded translation dictionaries.
+The OSR Tours and Travels website now uses **i18next**, a professional open-source internationalization framework, for managing translations instead of hardcoded translation dictionaries.
 
 ## Features
 - **Automatic Language Loading**: Translations are loaded from JSON files asynchronously
@@ -37,7 +37,7 @@ Each language has a JSON file organized by sections:
     ...
   },
   "about": {
-    "title": "ओएसआर ट्रांसपोर्ट के बारे में",
+    "title": "ओएसआर टूर एंड ट्रैवल्स के बारे में",
     ...
   },
   ...

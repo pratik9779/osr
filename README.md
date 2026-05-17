@@ -1,8 +1,8 @@
-# Kudal Transport - Modern Transport Company Website
+# OSR Tours and Travels - Modern Travel Company Website
 
 ## 📋 Project Overview
 
-A responsive, modern, and SEO-optimized website for Kudal Transport, a premium transport and logistics company based in Sindhudurg, Maharashtra. The website is built with pure HTML, CSS, and JavaScript (no frameworks) for optimal performance and easy deployment.
+A responsive, modern, and SEO-optimized website for OSR Tours and Travels, a premium travel and logistics company based in Sindhudurg, Maharashtra. The website is built with pure HTML, CSS, and JavaScript (no frameworks) for optimal performance and easy deployment.
 
 ### 🎯 Features
 
@@ -57,14 +57,14 @@ Create `nginx.conf`:
 ```nginx
 server {
     listen 80;
-    server_name osrtransport.com www.osrtransport.com;
+    server_name osrtoursandtravels.com www.osrtoursandtravels.com;
     root /var/www/html;
     
     index index.html;
     
     # Redirect www to non-www
-    if ($host = www.osrtransport.com) {
-        return 301 https://osrtransport.com$request_uri;
+    if ($host = www.osrtoursandtravels.com) {
+        return 301 https://osrtoursandtravels.com$request_uri;
     }
     
     # Enable gzip compression
@@ -103,9 +103,9 @@ docker run -p 80:80 kudal-transport
 
 ### Option 4: GitHub Pages
 
-1. Create GitHub repository: `osrtransport.github.io`
+1. Create GitHub repository: `osrtoursandtravels.github.io`
 2. Push all files to main branch
-3. Website will be live at: `https://osrtransport.github.io`
+3. Website will be live at: `https://osrtoursandtravels.github.io`
 
 ### Option 5: Netlify
 
@@ -352,8 +352,8 @@ This website template is provided as-is. Ensure you:
 ## 📞 Contact & Support
 
 For issues or questions:
-- Email: support@osrtransport.com
-- Phone: +91 9876 543 210
+- Email: support@osrtoursandtravels.com
+- Phone: +91 93097 21804
 - Address: Main Bus Stand, Kudal, Sindhudurg 416520
 
 ---
@@ -362,4 +362,4 @@ For issues or questions:
 **Version:** 1.0
 **Status:** Production Ready ✅
 
-Built with ❤️ for Modern Transport Services
+Built with ❤️ for Modern Travel Services
