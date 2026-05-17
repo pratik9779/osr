@@ -51,6 +51,7 @@ async function loadTranslationResources() {
                 console.log('i18next initialized successfully');
                 translatePageContent();
                 updateLanguageButtonState();
+                updateLanguageLabel(); // ✅ ADD THIS LINE
             }
         });
     } catch (error) {
@@ -129,30 +130,40 @@ function updateLanguageLabel() {
    ===================== */
 
 // Toggle translation dropdown
-translationBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    translationDropdown.classList.toggle('show');
-});
-
-// Close dropdown when clicking outside
-document.addEventListener('click', (e) => {
-    if (!translationBtn.contains(e.target) && !translationDropdown.contains(e.target)) {
-        translationDropdown.classList.remove('show');
-    }
-});
-
-// Language selection
-langOptions.forEach(option => {
-    option.addEventListener('click', () => {
-        changeLanguage(option.dataset.lang);
-        translationDropdown.classList.remove('show');
+if (translationBtn && translationDropdown) {
+    translationBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        translationDropdown.classList.toggle('show');
     });
-});
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!translationBtn.contains(e.target) && !translationDropdown.contains(e.target)) {
+            translationDropdown.classList.remove('show');
+        }
+    });
+
+    // Language selection
+    langOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            changeLanguage(option.dataset.lang);
+            translationDropdown.classList.remove('show');
+        });
+    });
+} else {
+    // Fallback: translation controls are not present in this layout
+}
+
 
 // Initialize language on page load
 document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+
     if (i18nextReady) {
-        translatePageContent();
+        i18next.changeLanguage(savedLang, () => {
+            translatePageContent();
+            updateLanguageLabel();
+        });
     }
 });
 
@@ -338,6 +349,149 @@ if (bookingForm) {
     });
 }
 
+const carousel = document.getElementById('fleetCarousel');
+const nextBtn = document.querySelector('.next');
+const prevBtn = document.querySelector('.prev');
+let originalCards = [];
+let allCards = [];
+let scrollTimeout;
+let cloneSetWidth = 0;
+
+function openVehicleModal(card) {
+    const modal = document.getElementById('vehicleModal');
+    if (!modal) return;
+    document.getElementById('vehicleTitle').textContent = card.dataset.name;
+    document.getElementById('vehicleSeats').textContent = card.dataset.seats;
+    document.getElementById('vehicleType').textContent = card.dataset.type;
+    document.getElementById('vehicleDesc').textContent = card.dataset.desc;
+    modal.style.display = 'block';
+}
+
+if (carousel) {
+    carousel.addEventListener('click', (event) => {
+        const card = event.target.closest('.fleet-card');
+        if (!card || !carousel.contains(card)) return;
+        openVehicleModal(card);
+    });
+}
+
+function updateActiveCard() {
+    if (!carousel || allCards.length === 0) return;
+
+    const carouselRect = carousel.getBoundingClientRect();
+    const containerCenter = carousel.scrollLeft + (carouselRect.width / 2);
+
+    let closestCard = null;
+    let closestDistance = Infinity;
+
+    allCards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = carousel.scrollLeft + (cardRect.left - carouselRect.left) + (cardRect.width / 2);
+        const distance = Math.abs(containerCenter - cardCenter);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestCard = card;
+        }
+    });
+
+    allCards.forEach(card => card.classList.remove('active'));
+
+    if (closestCard) {
+        closestCard.classList.add('active');
+    }
+}
+
+function normalizeScrollPosition() {
+    if (!carousel || originalCards.length === 0 || cloneSetWidth === 0) return;
+
+    // Only normalize when scrolled deep into the clones (80% through)
+    if (carousel.scrollLeft >= cloneSetWidth * 1.8) {
+        carousel.style.scrollSnapType = 'none';
+        carousel.scrollTo({ left: carousel.scrollLeft - cloneSetWidth, behavior: 'auto' });
+        setTimeout(() => carousel.style.scrollSnapType = '', 50);
+    }
+}
+
+function scrollToCard(card, options = { behavior: 'smooth' }) {
+    if (!carousel || !card) return;
+
+    const scrollPosition =
+        card.offsetLeft - (carousel.clientWidth / 2) + (card.offsetWidth / 2);
+
+    carousel.scrollTo({
+        left: scrollPosition,
+        behavior: options.behavior || 'smooth'
+    });
+}
+
+function scrollToNext() {
+    const active = document.querySelector('.fleet-card.active');
+    if (!active || allCards.length === 0) return;
+    const next = active.nextElementSibling || allCards[0];
+    scrollToCard(next);
+}
+
+function scrollToPrev() {
+    const active = document.querySelector('.fleet-card.active');
+    if (!active || allCards.length === 0) return;
+    const prev = active.previousElementSibling || allCards[allCards.length - 1];
+    scrollToCard(prev);
+}
+
+function buildInfiniteCarousel() {
+    if (!carousel) return;
+
+    originalCards = Array.from(carousel.querySelectorAll('.fleet-card'));
+    if (originalCards.length === 0) return;
+
+    // Create clones after originals for seamless loop
+    const clones = originalCards.map(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.add('clone');
+        return clone;
+    });
+
+    clones.forEach(clone => carousel.appendChild(clone));
+
+    allCards = Array.from(carousel.querySelectorAll('.fleet-card'));
+    // Calculate the width of the original set
+    const cardWidth = originalCards[0].offsetWidth;
+    cloneSetWidth = cardWidth * originalCards.length;
+}
+
+function initializeCarousel() {
+    if (!carousel) return;
+
+    buildInfiniteCarousel();
+
+    if (originalCards.length === 0) return;
+
+    window.addEventListener('load', () => {
+    setTimeout(() => {
+        scrollToCard(originalCards[0], { behavior: 'auto' });
+        updateActiveCard();
+    }, 50); // small delay ensures layout is final
+});
+
+    carousel.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            normalizeScrollPosition();
+            updateActiveCard();
+        }, 120);
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', scrollToNext);
+    if (prevBtn) prevBtn.addEventListener('click', scrollToPrev);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCarousel);
+} else {
+    initializeCarousel();
+}
+
 /* =====================
    NEWSLETTER FORM
    ===================== */
@@ -476,8 +630,17 @@ document.querySelectorAll('.service-card, .trip-card, .testimonial-card, .featur
    ANALYTICS & TRACKING
    ===================== */
 
-// Track page views
+   // Disable browser scroll restore
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+// Force scroll to top
 window.addEventListener('load', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        updateActiveCard(); // keeps carousel correct
+    }, 0);
     console.log('Page loaded:', {
         url: window.location.href,
         timestamp: new Date().toISOString(),
