@@ -1,0 +1,111 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "trips": "Trips",
+    "testimonials": "Testimonials",
+    "contact": "Contact"
+  },
+  "about": {
+    "title": "About OSR Transport",
+    "subtitle": "Your Trusted Travel Partner",
+    "heading": "Who We Are",
+    "description": "OSR Transport has been serving the Sindhudurg region since 2010, providing safe, comfortable, and affordable transport solutions.",
+    "mission": "We pride ourselves on our modern fleet, professional drivers, and commitment to customer satisfaction. Our mission is to make travel easy, safe, and enjoyable for everyone.",
+    "yearsOfService": "Years of Service",
+    "happyCustomers": "Happy Customers",
+    "dailyTrips": "Daily Trips",
+    "modernBuses": "Modern Buses"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Comprehensive Transport Solutions",
+    "cityTransport": "City Transport",
+    "cityTransportDesc": "Regular local transport connecting Kudal to nearby cities and towns. Frequent schedules and affordable fares for daily commuters.",
+    
+    "highwayRoutes": "Highway Routes",
+    "highwayRoutesDesc": "Long-distance comfortable journeys on major highways. AC buses with reclining seats for your comfort on extended travels.",
+    
+    "tourismPackages": "Tourism Packages",
+    "tourismPackagesDesc": "Curated travel packages to popular destinations. Explore Kerala, Goa, and scenic locations with professional guides.",
+    
+    "corporateTransport": "Corporate Transport",
+    "corporateTransportDesc": "Dedicated transport solutions for companies. Employee shuttle services and group travel arrangements for corporate events.",
+    
+    "groupTravel": "Group Travel",
+    "groupTravelDesc": "Perfect for educational tours, family outings, and group celebrations. Customized itineraries and competitive group rates.",
+    
+    "cargoLogistics": "Cargo & Logistics",
+    "cargoLogisticsDesc": "Safe and timely cargo transportation. Covered vehicles with GPS tracking for complete peace of mind."
+  },
+  "trips": {
+    "title": "Popular Routes",
+    "subtitle": "Explore Our Premium Trip Options",
+    "distance": "Distance:",
+    "duration": "Duration:",
+    "fare": "Fare:",
+    "departure": "Departure:",
+    "bookTicket": "Book Ticket"
+  },
+  "whyChoose": {
+    "title": "Why Choose OSR Transport",
+    "subtitle": "Reasons Our Customers Love Us",
+    "safetyFirst": "Safety First",
+    "comfort": "Comfort",
+    "affordableRates": "Affordable Rates",
+    "onTimeService": "On-Time Service",
+    "easyBooking": "Easy Booking",
+    "insuranceCoverage": "Insurance Coverage"
+  },
+  "testimonials": {
+    "title": "What Our Customers Say",
+    "subtitle": "Real Reviews from Real Travelers"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "We're Here to Help",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "businessHours": "Business Hours",
+    "fullName": "Full Name *",
+    "emailAddress": "Email Address *",
+    "phoneNumber": "Phone Number *",
+    "subject": "Subject *",
+    "message": "Message *",
+    "sendMessage": "Send Message"
+  },
+  "booking": {
+    "title": "Book Your Ticket",
+    "from": "From *",
+    "to": "To *",
+    "departureDate": "Departure Date *",
+    "passengers": "Number of Passengers *",
+    "travelDate": "Travel Date *",
+    "proceedPayment": "Proceed to Payment"
+  },
+  "footer": {
+    "osrTransport": "OSR Transport",
+    "aboutUs": "About Us",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "newsletter": "Newsletter",
+    "subscribe": "Subscribe to Our Newsletter",
+    "email": "Email Address",
+    "subscribe_btn": "Subscribe",
+    "copyright": "© 2024 OSR Transport. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsService": "Terms of Service"
+  },
+  "notifications": {
+    "fillAllFields": "Please fill in all fields",
+    "invalidEmail": "Please enter a valid email address",
+    "invalidPhone": "Please enter a valid phone number",
+    "messageSent": "Thank you! Your message has been sent successfully. We will contact you soon.",
+    "bookingDetails": "Please fill in all booking details",
+    "bookingConfirmed": "Booking confirmed! Check your email for payment details. Reference: BK",
+    "subscribed": "Successfully subscribed to our newsletter!",
+    "languageChanged": "Language changed to"
+  }
+}

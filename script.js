@@ -10,6 +10,163 @@ const bookingForm = document.getElementById('bookingForm');
 const newsletterForm = document.getElementById('newsletterForm');
 const bookingModal = document.getElementById('bookingModal');
 
+// Translation elements
+const translationBtn = document.getElementById('translationBtn');
+const translationDropdown = document.getElementById('translationDropdown');
+const langOptions = document.querySelectorAll('.lang-option');
+
+/* =====================
+   TRANSLATION SYSTEM WITH i18next
+   ===================== */
+
+// Initialize i18next
+let i18nextReady = false;
+
+// Load translation resources
+async function loadTranslationResources() {
+    try {
+        const [enRes, hiRes, mrRes] = await Promise.all([
+            fetch('locales/en.json').then(r => r.json()),
+            fetch('locales/hi.json').then(r => r.json()),
+            fetch('locales/mr.json').then(r => r.json())
+        ]);
+
+        i18next.init({
+            lng: localStorage.getItem('selectedLanguage') || 'en',
+            fallbackLng: 'en',
+            resources: {
+                en: { translation: enRes },
+                hi: { translation: hiRes },
+                mr: { translation: mrRes }
+            },
+            interpolation: {
+                escapeValue: false
+            },
+            
+        }, (err, t) => {
+            if (err) {
+                console.error('i18next initialization error:', err);
+            } else {
+                i18nextReady = true;
+                console.log('i18next initialized successfully');
+                translatePageContent();
+                updateLanguageButtonState();
+                updateLanguageLabel(); // ✅ ADD THIS LINE
+            }
+        });
+    } catch (error) {
+        console.error('Error loading translation resources:', error);
+        // Fallback: Initialize without translations
+        i18nextReady = true;
+    }
+}
+
+// Initialize translations when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadTranslationResources);
+} else {
+    loadTranslationResources();
+}
+
+// Function to change language
+function changeLanguage(lang) {
+    if (!i18nextReady) return;
+    
+    localStorage.setItem('selectedLanguage', lang);
+    i18next.changeLanguage(lang, () => {
+        translatePageContent();
+    updateLanguageLabel(); // ✅ ADD THIS
+
+    const langNames = { en: 'English', hi: 'हिंदी', mr: 'मराठी' };
+    showNotification(`${i18next.t('notifications.languageChanged')} ${langNames[lang]}`, 'success');    
+    });
+}
+
+// Function to translate page content
+function translatePageContent() {
+    if (!i18nextReady) return;
+    
+    // Translate all elements with data-translate attribute (for backward compatibility)
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(element => {
+        const key = element.dataset.translate;
+        const translation = i18next.t(key, { defaultValue: key });
+        element.textContent = translation;
+    });
+    
+    // Translate elements with data-i18n attribute
+    const i18nElements = document.querySelectorAll('[data-i18n]');
+    i18nElements.forEach(element => {
+        const key = element.dataset.i18n;
+        const translation = i18next.t(key, { defaultValue: key });
+        element.textContent = translation;
+    });
+}
+
+// Update language button state
+function updateLanguageButtonState() {
+    const currentLang = i18next.language;
+    document.querySelectorAll('.lang-option').forEach(opt => {
+        opt.classList.toggle('active', opt.dataset.lang === currentLang);
+    });
+}
+function updateLanguageLabel() {
+    const langMap = {
+        en: 'EN',
+        hi: 'HI',
+        mr: 'MR'
+    };
+
+    const currentLang = i18next.language || 'en';
+    const label = langMap[currentLang] || 'EN';
+
+    const langDisplay = document.getElementById('currentLang');
+    if (langDisplay) {
+        langDisplay.textContent = label;
+    }
+}
+/* =====================
+   TRANSLATION FUNCTIONALITY
+   ===================== */
+
+// Toggle translation dropdown
+if (translationBtn && translationDropdown) {
+    translationBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        translationDropdown.classList.toggle('show');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!translationBtn.contains(e.target) && !translationDropdown.contains(e.target)) {
+            translationDropdown.classList.remove('show');
+        }
+    });
+
+    // Language selection
+    langOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            changeLanguage(option.dataset.lang);
+            translationDropdown.classList.remove('show');
+        });
+    });
+} else {
+    // Fallback: translation controls are not present in this layout
+}
+
+
+// Initialize language on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const savedLang = localStorage.getItem('selectedLanguage') || 'en';
+
+    if (i18nextReady) {
+        i18next.changeLanguage(savedLang, () => {
+            translatePageContent();
+            updateLanguageLabel();
+        });
+    }
+});
+
 /* =====================
    MOBILE MENU FUNCTIONALITY
    ===================== */
@@ -192,6 +349,149 @@ if (bookingForm) {
     });
 }
 
+const carousel = document.getElementById('fleetCarousel');
+const nextBtn = document.querySelector('.next');
+const prevBtn = document.querySelector('.prev');
+let originalCards = [];
+let allCards = [];
+let scrollTimeout;
+let cloneSetWidth = 0;
+
+function openVehicleModal(card) {
+    const modal = document.getElementById('vehicleModal');
+    if (!modal) return;
+    document.getElementById('vehicleTitle').textContent = card.dataset.name;
+    document.getElementById('vehicleSeats').textContent = card.dataset.seats;
+    document.getElementById('vehicleType').textContent = card.dataset.type;
+    document.getElementById('vehicleDesc').textContent = card.dataset.desc;
+    modal.style.display = 'block';
+}
+
+if (carousel) {
+    carousel.addEventListener('click', (event) => {
+        const card = event.target.closest('.fleet-card');
+        if (!card || !carousel.contains(card)) return;
+        openVehicleModal(card);
+    });
+}
+
+function updateActiveCard() {
+    if (!carousel || allCards.length === 0) return;
+
+    const carouselRect = carousel.getBoundingClientRect();
+    const containerCenter = carousel.scrollLeft + (carouselRect.width / 2);
+
+    let closestCard = null;
+    let closestDistance = Infinity;
+
+    allCards.forEach(card => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenter = carousel.scrollLeft + (cardRect.left - carouselRect.left) + (cardRect.width / 2);
+        const distance = Math.abs(containerCenter - cardCenter);
+
+        if (distance < closestDistance) {
+            closestDistance = distance;
+            closestCard = card;
+        }
+    });
+
+    allCards.forEach(card => card.classList.remove('active'));
+
+    if (closestCard) {
+        closestCard.classList.add('active');
+    }
+}
+
+function normalizeScrollPosition() {
+    if (!carousel || originalCards.length === 0 || cloneSetWidth === 0) return;
+
+    // Only normalize when scrolled deep into the clones (80% through)
+    if (carousel.scrollLeft >= cloneSetWidth * 1.8) {
+        carousel.style.scrollSnapType = 'none';
+        carousel.scrollTo({ left: carousel.scrollLeft - cloneSetWidth, behavior: 'auto' });
+        setTimeout(() => carousel.style.scrollSnapType = '', 50);
+    }
+}
+
+function scrollToCard(card, options = { behavior: 'smooth' }) {
+    if (!carousel || !card) return;
+
+    const scrollPosition =
+        card.offsetLeft - (carousel.clientWidth / 2) + (card.offsetWidth / 2);
+
+    carousel.scrollTo({
+        left: scrollPosition,
+        behavior: options.behavior || 'smooth'
+    });
+}
+
+function scrollToNext() {
+    const active = document.querySelector('.fleet-card.active');
+    if (!active || allCards.length === 0) return;
+    const next = active.nextElementSibling || allCards[0];
+    scrollToCard(next);
+}
+
+function scrollToPrev() {
+    const active = document.querySelector('.fleet-card.active');
+    if (!active || allCards.length === 0) return;
+    const prev = active.previousElementSibling || allCards[allCards.length - 1];
+    scrollToCard(prev);
+}
+
+function buildInfiniteCarousel() {
+    if (!carousel) return;
+
+    originalCards = Array.from(carousel.querySelectorAll('.fleet-card'));
+    if (originalCards.length === 0) return;
+
+    // Create clones after originals for seamless loop
+    const clones = originalCards.map(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.add('clone');
+        return clone;
+    });
+
+    clones.forEach(clone => carousel.appendChild(clone));
+
+    allCards = Array.from(carousel.querySelectorAll('.fleet-card'));
+    // Calculate the width of the original set
+    const cardWidth = originalCards[0].offsetWidth;
+    cloneSetWidth = cardWidth * originalCards.length;
+}
+
+function initializeCarousel() {
+    if (!carousel) return;
+
+    buildInfiniteCarousel();
+
+    if (originalCards.length === 0) return;
+
+    window.addEventListener('load', () => {
+    setTimeout(() => {
+        scrollToCard(originalCards[0], { behavior: 'auto' });
+        updateActiveCard();
+    }, 50); // small delay ensures layout is final
+});
+
+    carousel.addEventListener('scroll', () => {
+        if (scrollTimeout) clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            normalizeScrollPosition();
+            updateActiveCard();
+        }, 120);
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', scrollToNext);
+    if (prevBtn) prevBtn.addEventListener('click', scrollToPrev);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeCarousel);
+} else {
+    initializeCarousel();
+}
+
 /* =====================
    NEWSLETTER FORM
    ===================== */
@@ -330,8 +630,17 @@ document.querySelectorAll('.service-card, .trip-card, .testimonial-card, .featur
    ANALYTICS & TRACKING
    ===================== */
 
-// Track page views
+   // Disable browser scroll restore
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+
+// Force scroll to top
 window.addEventListener('load', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+        updateActiveCard(); // keeps carousel correct
+    }, 0);
     console.log('Page loaded:', {
         url: window.location.href,
         timestamp: new Date().toISOString(),
